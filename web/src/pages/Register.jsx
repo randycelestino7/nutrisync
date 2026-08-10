@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
+import '../Auth.css'
 
 function Register() {
   const [fullName, setFullName] = useState('')
@@ -16,7 +17,6 @@ function Register() {
     setError('')
     setLoading(true)
 
-    // 1. Crear el usuario en el sistema de autenticación de Supabase
     const { data, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
@@ -28,7 +28,6 @@ function Register() {
       return
     }
 
-    // 2. Guardar el nombre y el rol en la tabla "profiles"
     const { error: profileError } = await supabase.from('profiles').insert({
       id: data.user.id,
       full_name: fullName,
@@ -46,65 +45,62 @@ function Register() {
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px' }}>
-      <h2>Crear cuenta - NutriSync</h2>
-      <form onSubmit={handleRegister}>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Nombre completo</label>
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          />
-        </div>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-logo">NutriSync</div>
+        <p className="auth-subtitle">Crea tu cuenta para comenzar</p>
 
-        <div style={{ marginBottom: '10px' }}>
-          <label>Correo electrónico</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px' }}
-          />
-        </div>
+        <form onSubmit={handleRegister}>
+          <div className="form-group">
+            <label>Nombre completo</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+          </div>
 
-        <div style={{ marginBottom: '10px' }}>
-          <label>Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-            style={{ width: '100%', padding: '8px' }}
-          />
-        </div>
+          <div className="form-group">
+            <label>Correo electrónico</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <div style={{ marginBottom: '10px' }}>
-          <label>Soy...</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            style={{ width: '100%', padding: '8px' }}
-          >
-            <option value="nutritionist">Nutriólogo</option>
-            <option value="patient">Paciente</option>
-          </select>
-        </div>
+          <div className="form-group">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div className="form-group">
+            <label>Soy...</label>
+            <select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="nutritionist">Nutriólogo</option>
+              <option value="patient">Paciente</option>
+            </select>
+          </div>
 
-        <button type="submit" disabled={loading} style={{ width: '100%', padding: '10px' }}>
-          {loading ? 'Creando cuenta...' : 'Registrarme'}
-        </button>
-      </form>
+          {error && <p className="auth-error">{error}</p>}
 
-      <p style={{ marginTop: '15px' }}>
-        ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
-      </p>
+          <button type="submit" disabled={loading} className="auth-button">
+            {loading ? 'Creando cuenta...' : 'Registrarme'}
+          </button>
+        </form>
+
+        <p className="auth-footer">
+          ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+        </p>
+      </div>
     </div>
   )
 }
