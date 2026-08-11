@@ -1,8 +1,8 @@
 function Dashboard() {
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>¡Bienvenido a NutriSync!</h1>
-      <p>Si ves esto, el login funcionó correctamente.</p>
+    <div>
+      <h1 className="page-title">Inicio</h1>
+      <p>Bienvenido a tu panel de NutriSync.</p>
     </div>
   )
 }

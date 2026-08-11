@@ -32,6 +32,7 @@ function Register() {
       id: data.user.id,
       full_name: fullName,
       role: role,
+      email: email,
     })
 
     if (profileError) {
